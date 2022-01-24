@@ -1,0 +1,3 @@
+module ProgrammingChallenges
+
+end # module
