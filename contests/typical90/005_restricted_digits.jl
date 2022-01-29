@@ -1,38 +1,33 @@
-mutable struct RestrictedDigits
-    b::Int64
-    cs::Vector{Int64}
-    res::Vector{Int64}
-    table::Matrix{Int64}
-end
-
-function RestrictedDigits(b, cs)
-    res = zeros(Int64, b)
-    for c in cs
-        res[1+c%b] += 1
-    end
-    table = [(10 * bi + c) % b + 1 for bi in 0:b-1, c in cs]
-    RestrictedDigits(b, cs, res, table)
-end
-
-function shift!(rs::RestrictedDigits)
-    m = 10^9 + 7
-    nextres = zeros(Int64, rs.b)
-    for bi in 1:rs.b
-        for ci in 1:length(rs.cs)
-            nex = rs.table[bi, ci]
-            nextres[nex] += rs.res[bi]
-            nextres[nex] = nextres[nex] % m
+function conv(m, b, ms1, ms2)
+    d = 10^9 + 7
+    pmod = powermod(10, m, b) # avoid overflow
+    nextms = zeros(Int64, b)
+    for j1 in 0:b-1
+        for j2 in 0:b-1
+            i = mod(pmod * j1 + j2, b)
+            nextms[1+i] = (nextms[1+i] + ms1[1+j1] * ms2[1+j2]) % d
         end
     end
-    rs.res = nextres
+    nextms
+end
+
+function rmods(n, b, cs, ms)
+    n == 1 && return ms
+    m, r = divrem(n, 2)
+    mct = rmods(m, b, cs, ms)
+    mct = conv(m, b, mct, mct)
+    if r == 1
+        mct = conv(1, b, mct, ms)
+    end
+    mct
 end
 
 function rdigits(n, b, cs)
-    rs = RestrictedDigits(b, cs)
-    for i in 2:n
-        shift!(rs)
+    ms = zeros(Int64, b)
+    for c in cs
+        ms[1+c%b] += 1
     end
-    first(rs.res)
+    first(rmods(n, b, cs, ms))
 end
 
 function main()
@@ -42,7 +37,3 @@ function main()
 end
 
 main()
-# rdigits(3, 6, [1, 5, 9])
-for i in 1:5
-    @time rdigits(10^i, 957, [1, 2, 3, 5, 6, 7, 9])
-end
