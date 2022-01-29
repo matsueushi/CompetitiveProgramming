@@ -1,29 +1,40 @@
-function score_sum(cps, lrs)
-    mask = cps[1, :] .== 1
-    cls1 = mask .* cps[2, :]
-    cls2 = .!(mask) .* cps[2, :]
+function score_sum(cs, ps, ls, rs)
+    mask = cs .== 1
+    cls1 = mask .* ps
+    cls2 = .!(mask) .* ps
     pushfirst!(cls1, 0)
     pushfirst!(cls2, 0)
-    ans = Vector{Pair{Int64,Int64}}()
     ccum1 = cumsum(cls1)
     ccum2 = cumsum(cls2)
-    for i in 1:size(lrs, 2)
-        st, en = lrs[:, i]
-        a1 = ccum1[en+1] - ccum1[st]
-        a2 = ccum2[en+1] - ccum2[st]
-        push!(ans, a1 => a2)
+    as = zero(ls)
+    bs = zero(rs)
+    for i in 1:length(ls)
+        st = ls[i]
+        en = rs[i]
+        a = ccum1[en+1] - ccum1[st]
+        b = ccum2[en+1] - ccum2[st]
+        as[i] = a
+        bs[i] = b
     end
-    ans
+    as, bs
 end
 
 function main()
-    inputs = readlines()
-    n = parse.(Int64, inputs[1])
-    cps = hcat([parse.(Int64, split(x)) for x in inputs[2:n+1]]...)
-    q = parse.(Int64, inputs[n+2])
-    lrs = hcat([parse.(Int64, split(x)) for x in inputs[n+3:n+q+2]]...)
-    for (a1, a2) in score_sum(cps, lrs)
-        println("$(a1) $(a2)")
+    n = parse.(Int64, readline())
+    cs = zeros(Int64, n)
+    ps = zeros(Int64, n)
+    for i in 1:n
+        cs[i], ps[i] = parse.(Int64, split(readline()))
+    end
+    q = parse.(Int64, readline())
+    ls = zeros(Int64, q)
+    rs = zeros(Int64, q)
+    for i in 1:q
+        ls[i], rs[i] = parse.(Int64, split(readline()))
+    end
+    as, bs = score_sum(cs, ps, ls, rs)
+    for i = 1:q
+        println("$(as[i]) $(bs[i])")
     end
 end
 
