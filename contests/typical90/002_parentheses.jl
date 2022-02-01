@@ -44,5 +44,9 @@ function parentheses(n)
     end
 end
 
-n = parse(Int64, readline())
-parentheses(n)
+function main()
+    n = parse(Int64, readline())
+    parentheses(n)
+end
+
+main()

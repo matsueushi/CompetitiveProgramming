@@ -11,10 +11,14 @@ function cross_sum(mat)
     end
 end
 
-h, w = parse.(Int64, split(readline()))
-mat = Matrix{Int64}(undef, h, w)
-lines = readlines()
-for (i, l) in enumerate(lines)
-    mat[i, :] = parse.(Int64, split(l))
+function main()
+    h, w = parse.(Int64, split(readline()))
+    mat = Matrix{Int64}(undef, h, w)
+    lines = readlines()
+    for (i, l) in enumerate(lines)
+        mat[i, :] = parse.(Int64, split(l))
+    end
+    cross_sum(mat)
 end
-cross_sum(mat)
+
+main()

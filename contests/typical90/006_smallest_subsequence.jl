@@ -13,6 +13,8 @@ function subseq(k, s)
     ans
 end
 
-n, k = parse.(Int64, split(readline()))
-s = readline()
-println(subseq(k, s))
+function main()
+    n, k = parse.(Int64, split(readline()))
+    s = readline()
+    println(subseq(k, s))
+end

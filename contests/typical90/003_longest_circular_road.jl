@@ -29,7 +29,11 @@ function circ_roads(n, roads)
     max_dist + 1
 end
 
-n = parse(Int64, readline())
-lines = readlines()
-roads = [parse.(Int64, split(x)) for x in lines[1:n-1]]
-println(circ_roads(n, roads))
+function main()
+    n = parse(Int64, readline())
+    lines = readlines()
+    roads = [parse.(Int64, split(x)) for x in lines[1:n-1]]
+    println(circ_roads(n, roads))
+end
+
+main()

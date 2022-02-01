@@ -25,7 +25,11 @@ function yokan(k, l, as)
     lb
 end
 
-n, l = parse.(Int64, split(readline()))
-k = parse(Int64, readline())
-as = parse.(Int64, split(readline()))
-println(yokan(k, l, as))
+function main()
+    n, l = parse.(Int64, split(readline()))
+    k = parse(Int64, readline())
+    as = parse.(Int64, split(readline()))
+    println(yokan(k, l, as))
+end
+
+main()

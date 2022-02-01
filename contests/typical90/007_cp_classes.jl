@@ -18,9 +18,13 @@ function cp_classes(as, bs)
     [abs_rating(as, b) for b in bs]
 end
 
-n = parse(Int64, readline())
-as = parse.(Int64, split(readline()))
-q = parse(Int64, readline())
-lines = readlines()
-bs = parse.(Int64, lines[1:q])
-println.(cp_classes(as, bs))
+function main()
+    n = parse(Int64, readline())
+    as = parse.(Int64, split(readline()))
+    q = parse(Int64, readline())
+    lines = readlines()
+    bs = parse.(Int64, lines[1:q])
+    println.(cp_classes(as, bs))
+end
+
+main()
