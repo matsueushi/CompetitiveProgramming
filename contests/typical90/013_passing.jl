@@ -1,24 +1,21 @@
+using DataStructures
+
 function dijkstra(graph, start)
     n = length(graph)
-    frontier = Set(1:n)
     distance = fill(typemax(Int64), n)
     distance[start] = 0
+    frontier = PriorityQueue(start => 0)
 
     pt = start
     while !isempty(frontier)
-        x = pop!(frontier, pt)
-        cx = distance[x]
+        x, cx = dequeue_pair!(frontier)
         edges = graph[x]
 
         for (node, cost) in edges
-            distance[node] = min(distance[node], cx + cost)
-        end
-
-        maxcost = typemax(Int64)
-        for f in frontier
-            if distance[f] < maxcost
-                maxcost = distance[f]
-                pt = f
+            xcost = cx + cost
+            if distance[node] > xcost
+                distance[node] = xcost
+                frontier[node] = xcost
             end
         end
     end
