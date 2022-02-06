@@ -31,12 +31,12 @@ function update!(q::RangeMinimumQuery{T}, i::Integer, x::T) where {T<:Number}
 end
 
 
-function range_minimum(q::RangeMinimumQuery{T}, a::Integer, b::Integer, k::Integer, l::Integer, r::Integer) where {T<:Number}
+function query(q::RangeMinimumQuery{T}, a::Integer, b::Integer, k::Integer, l::Integer, r::Integer) where {T<:Number}
     (r < a || b < l) && return typemax(T)
     (a ≤ l && r ≤ b) && return q.rmq[k]
-    vl = range_minimum(q, a, b, 2 * k, l, (l + r) ÷ 2)
-    vr = range_minimum(q, a, b, 2 * k + 1, (l + r) ÷ 2 + 1, r)
+    vl = query(q, a, b, 2 * k, l, (l + r) ÷ 2)
+    vr = query(q, a, b, 2 * k + 1, (l + r) ÷ 2 + 1, r)
     min(vl, vr)
 end
 
-range_minimum(q::RangeMinimumQuery{T}, a::Integer, b::Integer) where {T<:Number} = range_minimum(q, a, b, 1, 1, q.n)
+query(q::RangeMinimumQuery{T}, a::Integer, b::Integer) where {T<:Number} = query(q, a, b, 1, 1, q.n)

@@ -3,9 +3,9 @@
     @testset "constructor" begin
         q = RangeMinimumQuery([5, 3, 7, 9, 6, 4, 1, 2])
         @test q.rmq == [1, 3, 1, 3, 7, 4, 1, 5, 3, 7, 9, 6, 4, 1, 2]
-        @test range_minimum(q, 1, 1) == 5
-        @test range_minimum(q, 1, 3) == 3
-        @test range_minimum(q, 4, 6) == 4
+        @test query(q, 1, 1) == 5
+        @test query(q, 1, 3) == 3
+        @test query(q, 4, 6) == 4
     end
 
     @testset "update" begin
