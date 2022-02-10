@@ -8,6 +8,14 @@
         @test query(q, 4, 6) == 4
     end
 
+    @testset "constructor2" begin
+        q = RangeMinimumQuery([5, 3, 7, 9, 6, 4, 1, 2], zero, max)
+        @test q.rmq == [9, 9, 6, 5, 9, 6, 2, 5, 3, 7, 9, 6, 4, 1, 2]
+        @test query(q, 1, 1) == 5
+        @test query(q, 1, 3) == 7
+        @test query(q, 4, 6) == 9
+    end
+
     @testset "update" begin
         q = RangeMinimumQuery{Int64}(3)
         @test q.n == 3
