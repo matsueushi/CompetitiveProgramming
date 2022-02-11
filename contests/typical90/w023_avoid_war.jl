@@ -19,10 +19,17 @@ function candidates!(ptn::Pattern, x, i, w)
         cp = x & x >> 1
         iszero(cp) || (valid &= cp)
         cx = x & x >> (w - 1)
-        iszero(cx) || (valid &= cx)
-        iszero(valid) && return
+        if !iszero(cx)
+            if isodd(cx)
+                valid &= 1 << (w - 1)
+            else
+                valid &= 1
+            end
+        end
+        # println((bitstring(x), bitstring(cp), bitstring(cx)))
         push!(ptn.xs, x)
         push!(ptn.vs, valid)
+        # println("aaa", (bitstring(x), bitstring(valid)))
         return
     end
     candidates!(ptn, x << 1, i + 1, w)
@@ -36,7 +43,7 @@ function setindex!(ptn::Pattern)
 end
 
 function filltransition!(ptn::Pattern)
-    mask = 2^(ptn.w + 1) - 1
+    mask = 1 << (ptn.w + 1) - 1
     for x in ptn.xs
         t0 = x << 1 & mask
         t1 = t0 + 1
@@ -46,22 +53,45 @@ function filltransition!(ptn::Pattern)
 end
 
 function avoid_war(h, w, grid)
-    println((h, w, grid))
+    # println((h, w, grid))
     ptn = Pattern(w)
     candidates!(ptn, 0, 0, w)
     setindex!(ptn)
     filltransition!(ptn)
 
+    # println(bitstring.(ptn.xs))
+    # println(ptn)
+
     cs = zero(ptn.xs)
     nextcs = zero(ptn.xs)
     cs[ptn.idx[0]] = 1
+    nxs = length(ptn.xs)
 
     for j in 1:w
         for i in 1:h
-            println((i, j), grid[i, j], cs)
+            for ix in 1:nxs
+                cs[ix] == 0 && continue
+                t0 = ptn.trs0[ix]
+                t1 = ptn.trs1[ix]
+                nextcs[t0] += cs[ix]
+                nextcs[t0] %= p
+                if iszero(grid[i, j]) && !isnothing(t1)
+                    isvalid = isodd(ptn.vs[t1] >> (j - 1))
+                    isvalid && (nextcs[t1] += cs[ix]; nextcs[t1] %= p)
+                end
+            end
             cs, nextcs = nextcs, cs
+            # println((i, j, grid[i, j]), cs, nextcs)
+            fill!(nextcs, 0)
         end
     end
+
+    total = 0
+    for c in cs
+        total += c
+        total %= p
+    end
+    total
 end
 
 function main()
