@@ -3,46 +3,28 @@ const p = 10^9 + 7
 struct Pattern
     w::Int64
     xs::Vector{Int64}
-    vs::Vector{Int64}
     idx::Dict{Int64,Int64}
     trs0::Vector{Int64}
     trs1::Vector{Union{Int64,Nothing}}
 end
 
-Pattern(w) = Pattern(w, Int64[], Int64[], Dict(), Int64[], Union{Int64,Nothing}[])
+Pattern(w) = Pattern(w, Int64[], Dict(), Int64[], Union{Int64,Nothing}[])
 
 function candidates!(ptn::Pattern, x, i, w)
     count_ones(x & (x << 1)) ≤ 1 || return
     if i == w + 1
         iszero(x & x << w) || return
-        valid = -1
-        cp = x & x >> 1
-        iszero(cp) || (valid &= cp)
-        cx = x & x >> (w - 1)
-        if !iszero(cx)
-            if isodd(cx)
-                valid &= 1 << (w - 1)
-            else
-                valid &= 1
-            end
-        end
-        # println((bitstring(x), bitstring(cp), bitstring(cx)))
         push!(ptn.xs, x)
-        push!(ptn.vs, valid)
-        # println("aaa", (bitstring(x), bitstring(valid)))
         return
     end
     candidates!(ptn, x << 1, i + 1, w)
     candidates!(ptn, x << 1 + 1, i + 1, w)
 end
 
-function setindex!(ptn::Pattern)
+function filltransition!(ptn::Pattern)
     for (i, v) in enumerate(ptn.xs)
         push!(ptn.idx, v => i)
     end
-end
-
-function filltransition!(ptn::Pattern)
     mask = 1 << (ptn.w + 1) - 1
     for x in ptn.xs
         t0 = x << 1 & mask
@@ -53,35 +35,37 @@ function filltransition!(ptn::Pattern)
 end
 
 function avoid_war(h, w, grid)
-    # println((h, w, grid))
     ptn = Pattern(w)
     candidates!(ptn, 0, 0, w)
-    setindex!(ptn)
     filltransition!(ptn)
-
-    # println(bitstring.(ptn.xs))
-    # println(ptn)
 
     cs = zero(ptn.xs)
     nextcs = zero(ptn.xs)
     cs[ptn.idx[0]] = 1
     nxs = length(ptn.xs)
 
-    for j in 1:w
-        for i in 1:h
+    for i in 1:h
+        for j in 1:w
             for ix in 1:nxs
                 cs[ix] == 0 && continue
                 t0 = ptn.trs0[ix]
-                t1 = ptn.trs1[ix]
                 nextcs[t0] += cs[ix]
                 nextcs[t0] %= p
-                if iszero(grid[i, j]) && !isnothing(t1)
-                    isvalid = isodd(ptn.vs[t1] >> (j - 1))
-                    isvalid && (nextcs[t1] += cs[ix]; nextcs[t1] %= p)
+
+                isone(grid[i, j]) && continue
+                t1 = ptn.trs1[ix]
+                x1 = ptn.xs[ix]
+                if j == 1
+                    iszero(x1 >> (w - 2) % 4) || continue
+                elseif j == w
+                    (iszero(x1 % 2) && (iszero(x1 >> (w - 1)))) || continue
+                else
+                    (iszero(x1 % 2) && (iszero(x1 >> (w - 2)))) || continue
                 end
+                nextcs[t1] += cs[ix]
+                nextcs[t1] %= p
             end
             cs, nextcs = nextcs, cs
-            # println((i, j, grid[i, j]), cs, nextcs)
             fill!(nextcs, 0)
         end
     end
