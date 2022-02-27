@@ -9,7 +9,6 @@ end
 function main()
     n, k = parse.(Int64, split(readline()))
     println(solve(n, k))
-    # println(solve(10^18,10^9))
 end
 
 main()
