@@ -29,37 +29,3 @@ function main()
 end
 
 main()
-const P = 10^9 + 7
-
-function ksum(a, b)
-    am = (a - 1) % P
-    bm = b % P
-    as = (am * (am + 1) ÷ 2) % P
-    bs = (bm * (bm + 1) ÷ 2) % P
-    (bs - as + P) % P
-end
-
-function letters(n)
-    a = 0
-    i = 1
-    x = 1
-    y = 9
-    while n > y
-        a += i * ksum(x, y)
-        a %= P
-        i += 1
-        x *= 10
-        y = y * 10 + 9
-    end
-    a += i * ksum(x, n)
-    a %= P
-end
-
-solve(l, r) = (letters(r) - letters(l - 1) + P) % P
-
-function main()
-    l, r = parse.(Int64, split(readline()))
-    println(solve(l, r))
-end
-
-main()
