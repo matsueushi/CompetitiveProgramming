@@ -34,9 +34,10 @@ function solve(n, t, axs, ays, bxs, bys)
 
     res = 0
     match = fill(-1, 2 * n)
+    used = falses(2 * n)
     for v in 1:n
         if match[v] < 0
-            used = falses(2 * n)
+            fill!(used, false)
             if dfs!(graph, used, match, v)
                 res += 1
             end
