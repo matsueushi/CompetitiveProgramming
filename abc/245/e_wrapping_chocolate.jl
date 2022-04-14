@@ -1,11 +1,11 @@
-struct SegTree{T}
+struct SegTree{T,OP}
     n::Int
     tn::Int
     tlog::Int
-    op::Function
+    op::OP
     e::T
     data::Vector{T}
-    function SegTree(x::AbstractVector{T}, op::Function, e::T) where {T}
+    function SegTree(x::AbstractVector{T}, op::OP, e::T) where {T,OP}
         @assert op(e, e) == e
         n = length(x)
         tlog = 0
@@ -18,12 +18,12 @@ struct SegTree{T}
         for i in Iterators.reverse(1:tn)
             data[i] = op(data[2*i], data[2*i+1])
         end
-        new{T}(n, tn, tlog, op, e, data)
+        new{T,OP}(n, tn, tlog, op, e, data)
     end
-    SegTree(n::Int, op::Function, e::T) where {T} = SegTree(fill(e, n), op, e)
+    SegTree(n::Int, op::OP, e::T) where {T,OP} = SegTree(fill(e, n), op, e)
 end
 
-function Base.setindex!(seg::SegTree{T}, x, i::Int) where {T}
+function Base.setindex!(seg::SegTree, x, i::Int)
     @boundscheck checkbounds(seg.data, i)
     i += seg.tn
     seg.data[i] = x
@@ -34,9 +34,9 @@ function Base.setindex!(seg::SegTree{T}, x, i::Int) where {T}
     x
 end
 
-Base.getindex(seg::SegTree{T}, i::Int) where {T} = seg.data[seg.tn+i]
+Base.getindex(seg::SegTree, i::Int) = seg.data[seg.tn+i]
 
-function partialprod(seg::SegTree{T}, I::AbstractUnitRange{Int}) where {T}
+function partialprod(seg::SegTree, I::AbstractUnitRange{Int})
     l, r = first(I), last(I)
     l ≤ r || return seg.e
     (1 ≤ l && r ≤ seg.n) || throw(BoundsError())
@@ -60,9 +60,9 @@ function partialprod(seg::SegTree{T}, I::AbstractUnitRange{Int}) where {T}
     seg.op(sml, smr)
 end
 
-Base.prod(seg::SegTree{T}) where {T} = seg.data[1]
+Base.prod(seg::SegTree) = seg.data[1]
 
-function max_right(seg::SegTree{T}, f::Function, l::Int) where {T}
+function max_right(seg::SegTree, f::Function, l::Int)
     @boundscheck checkbounds(seg.data, l)
     @assert f(seg.e)
     l += seg.tn
@@ -89,7 +89,7 @@ function max_right(seg::SegTree{T}, f::Function, l::Int) where {T}
     seg.n
 end
 
-function min_left(seg::SegTree{T}, f::Function, r::Int) where {T}
+function min_left(seg::SegTree, f::Function, r::Int)
     @boundscheck checkbounds(seg.data, r)
     @assert f(seg.e)
     r == 1 && return 1
