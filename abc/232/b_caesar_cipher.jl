@@ -1,8 +1,13 @@
 function main()
     s = readline()
     t = readline()
-    d = t[1] - s[1]
-    println(String(collect(s) .+ d) == t ? "Yes" : "No")
+    x = collect(s) .- 'a'
+    y = collect(t) .- 'a'
+    d = y[1] - x[1]
+    for i in 1:length(x)
+        (x[i] + 26 + d) % 26 == y[i] || (println("No"); return)
+    end
+    println("Yes")
 end
 
 main()
