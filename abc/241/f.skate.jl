@@ -1,3 +1,5 @@
+# TLE
+
 using DataStructures
 
 const dx = [1, 0, -1, 0]
@@ -31,6 +33,35 @@ end
 
 stoppable(r::Rink, p::Point, d::Int) = r.dr[r.pos[p]] >> (d - 1) & 1 == 1
 
+function make_graph(r::Rink)
+    pos = collect(keys(r.pos))
+
+    nnode = length(pos)
+    graph = [Int[] for _ in 1:nnode]
+
+    sort!(pos)
+    for (q, p) in traces(r, pos, 1, 4)
+        push!(graph[r.pos[q]], r.pos[p])
+    end
+
+    sort!(pos, by=x -> (x[1], -x[2]))
+    for (q, p) in traces(r, pos, 1, 2)
+        push!(graph[r.pos[q]], r.pos[p])
+    end
+
+    sort!(pos, by=x -> (x[2], x[1]))
+    for (q, p) in traces(r, pos, 2, 3)
+        push!(graph[r.pos[q]], r.pos[p])
+    end
+
+    sort!(pos, by=x -> (x[2], -x[1]))
+    for (q, p) in traces(r, pos, 2, 1)
+        push!(graph[r.pos[q]], r.pos[p])
+    end
+
+    graph
+end
+
 function traces(r::Rink, pos::Vector{Point}, i::Int, d::Int)
     vps = NTuple{2,Point}[]
     k = 1
@@ -44,6 +75,26 @@ function traces(r::Rink, pos::Vector{Point}, i::Int, d::Int)
         empty!(qs)
     end
     vps
+end
+
+function bfs(graph, spos, gpos)
+    # 01-bfs
+    nnode = length(graph)
+    dq = Deque{Int}()
+    dist = fill(typemax(Int), nnode)
+    dist[spos] = 0
+    push!(dq, spos)
+    while !isempty(dq)
+        i = popfirst!(dq)
+        i == gpos && return dist[gpos]
+        for j in graph[i]
+            if dist[j] > dist[i] + 1
+                dist[j] = dist[i] + 1
+                push!(dq, j)
+            end
+        end
+    end
+    -1
 end
 
 function solve(h, w, n, sx, sy, gx, gy, xs, ys)
@@ -60,48 +111,8 @@ function solve(h, w, n, sx, sy, gx, gy, xs, ys)
         end
     end
 
-    pos = collect(keys(rink.pos))
-
-    nnode = length(pos)
-    graph = [Int[] for _ in 1:nnode]
-
-    sort!(pos)
-    for (q, p) in traces(rink, pos, 1, 4)
-        push!(graph[rink.pos[q]], rink.pos[p])
-    end
-
-    sort!(pos, by=x -> (x[1], -x[2]))
-    for (q, p) in traces(rink, pos, 1, 2)
-        push!(graph[rink.pos[q]], rink.pos[p])
-    end
-
-    sort!(pos, by=x -> (x[2], x[1]))
-    for (q, p) in traces(rink, pos, 2, 3)
-        push!(graph[rink.pos[q]], rink.pos[p])
-    end
-
-    sort!(pos, by=x -> (x[2], -x[1]))
-    for (q, p) in traces(rink, pos, 2, 1)
-        push!(graph[rink.pos[q]], rink.pos[p])
-    end
-
-    # 01-bfs
-    dq = Deque{Int}()
-    dist = fill(typemax(Int), nnode)
-    dist[rink.pos[sp]] = 0
-    push!(dq, rink.pos[sp])
-    gpos = rink.pos[gp]
-    while !isempty(dq)
-        i = popfirst!(dq)
-        i == gpos && return dist[gpos]
-        for j in graph[i]
-            if dist[j] > dist[i] + 1
-                dist[j] = dist[i] + 1
-                push!(dq, j)
-            end
-        end
-    end
-    -1
+    graph = make_graph(rink)
+    bfs(graph, rink.pos[sp], rink.pos[gp])
 end
 
 function main()
