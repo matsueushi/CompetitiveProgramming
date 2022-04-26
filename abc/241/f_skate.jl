@@ -1,11 +1,7 @@
-# TLE
-
-using DataStructures
-
 const dx = [1, 0, -1, 0]
 const dy = [0, 1, 0, -1]
 
-Point = NTuple{2,Int}
+const Point = NTuple{2,Int}
 
 mutable struct Rink
     h::Int
@@ -80,7 +76,7 @@ end
 function bfs(graph, spos, gpos)
     # 01-bfs
     nnode = length(graph)
-    dq = Deque{Int}()
+    dq = Int[]
     dist = fill(typemax(Int), nnode)
     dist[spos] = 0
     push!(dq, spos)
@@ -128,3 +124,4 @@ function main()
 end
 
 main()
+
