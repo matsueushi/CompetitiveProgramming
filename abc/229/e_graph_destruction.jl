@@ -2,18 +2,18 @@ using DataStructures
 
 function solve(n, m, as, bs)
     comp = IntDisjointSets(n)
-    pq = PriorityQueue{Pair{Int},Int}(Base.Order.Reverse)
-    for i in 1:m
-        enqueue!(pq, as[i] => bs[i], as[i])
-    end
+    idx = sortperm(as)
+    as = as[idx]
+    bs = bs[idx]
     ncs = Int[0]
     nc = 0
     for i in n:-1:2
         nc += 1
-        while !isempty(pq) && last(peek(pq)) == i
-            edge, _ = dequeue_pair!(pq)
-            in_same_set(comp, first(edge), last(edge)) || (nc -= 1)
-            union!(comp, first(edge), last(edge))
+        while !isempty(as) && last(as) == i
+            a = pop!(as)
+            b = pop!(bs)
+            in_same_set(comp, a, b) || (nc -= 1)
+            union!(comp, a, b)
         end
         push!(ncs, nc)
     end
