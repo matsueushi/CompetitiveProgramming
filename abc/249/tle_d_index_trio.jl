@@ -38,5 +38,3 @@ function main()
 end
 
 main()
-
-# println((i, j, k, as[i], as[j], as[k], res0))
