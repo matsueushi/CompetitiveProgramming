@@ -1,4 +1,4 @@
-using ProgrammingChallenges
+using CompetitiveProgramming
 using Test
 
 include("test_combination.jl")

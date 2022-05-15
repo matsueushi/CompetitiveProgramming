@@ -1,4 +1,4 @@
-# ProgrammingChallenges
+# CompetitiveProgramming
 競技プログラミングの色々な問題をJuliaで解く
 
 Julia: v1.4.0

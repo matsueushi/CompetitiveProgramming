@@ -1,4 +1,4 @@
-using ProgrammingChallenges.FenwickTreeModule
+using CompetitiveProgramming.FenwickTreeModule
 
 @testset "Fenwick Tree" begin
     @testset "Basic" begin

@@ -1,4 +1,4 @@
-using ProgrammingChallenges.PermutationModule
+using CompetitiveProgramming.PermutationModule
 
 @testset "Permutation" begin
     @testset "Basic" begin

@@ -1,4 +1,4 @@
-using ProgrammingChallenges.NumberModule
+using CompetitiveProgramming.NumberModule
 
 @testset "Number" begin
     @test reversed_number(1234) == 4321

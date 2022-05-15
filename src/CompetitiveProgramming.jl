@@ -1,4 +1,4 @@
-module ProgrammingChallenges
+module CompetitiveProgramming
 
 include("combination.jl")
 include("disjoint_set.jl")

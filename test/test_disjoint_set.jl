@@ -1,4 +1,4 @@
-using ProgrammingChallenges.DisjointSetModule
+using CompetitiveProgramming.DisjointSetModule
 
 @testset "Disjoint Set" begin
     @testset "Basic" begin
