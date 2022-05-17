@@ -1,4 +1,4 @@
-function path_lengths(start, graph)
+function path_lengths(n, start, graph)
     d = 0
     targets = Set([start])
     seen = Dict{Int64,Int64}()
@@ -22,9 +22,9 @@ function circ_roads(n, roads)
         push!(graph[st], en)
         push!(graph[en], st)
     end
-    dists = path_lengths(1, graph)
+    dists = path_lengths(n, 1, graph)
     start = argmax(dists)
-    dists = path_lengths(start, graph)
+    dists = path_lengths(n, start, graph)
     max_dist, _ = findmax(dists)
     max_dist + 1
 end
