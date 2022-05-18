@@ -10,6 +10,7 @@ using CompetitiveProgramming.FenwickTreeModule
         @test partialsum(fw, 2:3) == 4
         @test partialsum(fw, 2:4) == 4
         @test partialsum(fw, 3:4) == 0
+        @test partialsum(fw, 5:4) == 0
     end
 
     @testset "Naive" begin
@@ -37,6 +38,5 @@ using CompetitiveProgramming.FenwickTreeModule
         @test_throws BoundsError add!(fw, 11, 0)
         @test_throws BoundsError partialsum(fw, -1:1)
         @test_throws BoundsError partialsum(fw, 5:11)
-        @test_throws AssertionError partialsum(fw, 5:4)
     end
 end

@@ -48,7 +48,7 @@ end
 
 function partialsum(fw::FenwickTree{T}, I::AbstractUnitRange{Int}) where {T}
     l, r = first(I), last(I)
-    @assert l ≤ r
+    l ≤ r || return zero(T)
     (1 ≤ l && r ≤ fw.n) || throw(BoundsError())
     prefixsum(fw, r) - prefixsum(fw, l - 1)
 end
