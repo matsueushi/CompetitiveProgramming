@@ -7,3 +7,10 @@ Julia: v1.4.0
 - [AtCoder Grand Contest](agc/)
 - [AtCoder Beginners Selection](abs/)
 - [競プロ典型 90 問](typical90/)
+
+
+# Memo
+```julia
+parseint() = parse(Int, readline())
+parseints() = parse.(Int, split(readline()))
+```
