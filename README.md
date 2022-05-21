@@ -20,3 +20,7 @@ end
 
 main()
 ```
+
+```julia
+ifelse(solve(), "Yes", "No")
+```
