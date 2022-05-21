@@ -9,7 +9,7 @@ Julia: v1.4.0
 - [競プロ典型 90 問](typical90/)
 
 
-# Memo
+# Snippets
 ```julia
 parseint() = parse(Int, readline())
 parseints() = parse.(Int, split(readline()))
