@@ -13,4 +13,10 @@ Julia: v1.4.0
 ```julia
 parseint() = parse(Int, readline())
 parseints() = parse.(Int, split(readline()))
+
+function main()
+
+end
+
+main()
 ```

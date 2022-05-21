@@ -1,6 +1,6 @@
 module PrimeModule
 
-export sieve
+export sieve, divisors
 
 function sieve(n)
     prime = Int[]
@@ -15,6 +15,22 @@ function sieve(n)
         end
     end
     prime
+end
+
+function divisors(n)
+    lowers = Int[]
+    uppers = Int[]
+    i = 1
+    isqrtn = isqrt(n)
+    for i in 1:isqrtn
+        if n % i == 0
+            push!(lowers, i)
+            if i != n ÷ i
+                push!(uppers, n ÷ i)
+            end
+        end
+    end
+    vcat(lowers, reverse(uppers))
 end
 
 end
