@@ -13,6 +13,13 @@ Julia: v1.4.0
 ```julia
 parseint() = parse(Int, readline())
 parseints() = parse.(Int, split(readline()))
+function parsepoints(n::Int)
+    xs, ys = zeros(Int, n), zeros(Int, n)
+        for i in 1:n
+        xs[i], ys[i] = parseints()
+    end
+    xs, ys
+end
 
 function main()
 
