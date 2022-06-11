@@ -1,6 +1,6 @@
 module DijkstraModule
 
-export DijkstraEdge, DijkStraGraph, add_edge!, DijkstraResult, dijkstra
+export DijkstraEdge, DijkStraGraph, add_dir_edge!, add_undir_edge!, DijkstraResult, dijkstra
 
 using DataStructures
 
@@ -26,8 +26,13 @@ end
 
 DijkStraGraph(n::Int) = DijkStraGraph(n, [DijkstraEdge[] for _ in 1:n])
 
-function add_edge!(g::DijkStraGraph, s::Int, t::Int, cost::Int)
+function add_dir_edge!(g::DijkStraGraph, s::Int, t::Int, cost::Int)
     push!(g.edges[s], DijkstraEdge(t, cost))
+end
+
+function add_undir_edge!(g::DijkStraGraph, s::Int, t::Int, cost::Int)
+    add_dir_edge!(g, s, t, cost)
+    add_dir_edge!(g, t, s, cost)
 end
 
 function dijkstra(g::DijkStraGraph, s::Int)
