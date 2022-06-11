@@ -1,5 +1,3 @@
-using CompetitiveProgramming.DijkstraModule
-
 @testset "Dijkstra" begin
     g = DijkStraGraph(7)
     add_undir_edge!(g, 1, 2, 2)

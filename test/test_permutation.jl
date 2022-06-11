@@ -1,5 +1,3 @@
-using CompetitiveProgramming.PermutationModule
-
 @testset "Permutation" begin
     @testset "Basic" begin
         xs = [1, 2, 3]

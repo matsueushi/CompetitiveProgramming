@@ -1,5 +1,3 @@
-module FenwickTreeModule
-
 """
     FenwickTree{T}(n::Int)
 Construct a FenwickTree of length `n`.
@@ -12,9 +10,6 @@ Increase the value of the FenwickTree at p. `a[ind] += x`.
     partialsum(fw::FenwirkTree{T}, I::AbstractUnitRante{Int})
 Return `a[l] + a[l + 1] + ... + a[r]` where l = `first(I)` and r = `last(I)`.
 """
-
-export FenwickTree, add!, prefixsum, partialsum
-
 
 struct FenwickTree{T}
     data::Vector{T}
@@ -51,6 +46,4 @@ function partialsum(fw::FenwickTree{T}, I::AbstractUnitRange{Int}) where {T}
     l ≤ r || return zero(T)
     (1 ≤ l && r ≤ fw.n) || throw(BoundsError())
     prefixsum(fw, r) - prefixsum(fw, l - 1)
-end
-
 end

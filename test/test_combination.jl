@@ -1,5 +1,3 @@
-using CompetitiveProgramming.CombinationModule
-
 @testset "CombinationModule" begin
     @testset "Basic" begin
         pmc = PrimeModCombination(10, 7)

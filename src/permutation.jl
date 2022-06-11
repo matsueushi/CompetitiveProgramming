@@ -1,7 +1,3 @@
-module PermutationModule
-
-export next_permutation!
-
 function next_permutation!(xs::Vector{T}) where {T}
     n = length(xs)
     left = 0
@@ -16,6 +12,4 @@ function next_permutation!(xs::Vector{T}) where {T}
     xs[left], xs[right] = xs[right], xs[left]
     reverse!(xs, left + 1, n)
     return true
-end
-
 end

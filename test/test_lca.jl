@@ -1,5 +1,3 @@
-using CompetitiveProgramming.LcaModule
-
 @testset "Lca" begin
     graph = [Int[] for i in 1:8]
     push!(graph[1], 2)

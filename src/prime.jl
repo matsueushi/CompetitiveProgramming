@@ -1,7 +1,3 @@
-module PrimeModule
-
-export sieve, divisors
-
 function sieve(n)
     prime = Int[]
     is_prime = trues(n)
@@ -31,6 +27,4 @@ function divisors(n)
         end
     end
     vcat(lowers, reverse(uppers))
-end
-
 end

@@ -1,5 +1,3 @@
-module DisjointSetModule
-
 """
     DisjointSet(n::Int)
 Construct an undirected graph with n vertices and no edges.
@@ -16,8 +14,6 @@ Return whether `a` and `b` are in the same set.
     group_size(d::DisjointSet, a::Int)
 Return the number of elements of the set containing `a`.
 """
-
-export DisjointSet, find_root!, in_same_set, group_size
 
 
 struct DisjointSet
@@ -50,5 +46,3 @@ end
 in_same_set(d::DisjointSet, a::Int, b::Int) = find_root!(d, a) == find_root!(d, b)
 
 group_size(d::DisjointSet, a::Int) = -d.par_or_size[find_root!(d, a)]
-
-end

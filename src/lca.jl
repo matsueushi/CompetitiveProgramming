@@ -1,8 +1,4 @@
-module LcaModule
-
 import Base.==
-
-export Lca, find_lca, distance
 
 struct Lca
     ancestor::Matrix{Int}
@@ -67,6 +63,4 @@ end
 function distance(lca::Lca, u::Int, v::Int)
     w = find_lca(lca, u, v)
     lca.depth[u] + lca.depth[v] - 2 * lca.depth[w]
-end
-
 end

@@ -1,7 +1,3 @@
-module DijkstraModule
-
-export DijkstraEdge, DijkStraGraph, add_dir_edge!, add_undir_edge!, DijkstraResult, dijkstra
-
 using DataStructures
 
 struct DijkstraEdge
@@ -57,6 +53,4 @@ function dijkstra(g::DijkStraGraph, s::Int)
         end
     end
     DijkstraResult(d, prev)
-end
-
 end

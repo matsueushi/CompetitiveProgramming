@@ -1,5 +1,3 @@
-module CombinationModule
-
 """
 fact[i] = (i-1)! mod p
 fact_inv[i] = ((i-1)!)^{-1} mod p
@@ -10,7 +8,6 @@ p = a * i + b, 0 ≤ b < i
 -> i^{-1} = -b * a^{-1} 
 """
 
-export PrimeModCombination, combination
 
 struct PrimeModCombination
     n::Int
@@ -35,6 +32,4 @@ end
 
 function combination(pmc::PrimeModCombination, n::Int, k::Int)
     pmc.fact[n+1] * (pmc.fact_inv[k+1] * pmc.fact_inv[n-k+1] % pmc.p) % pmc.p
-end
-
 end

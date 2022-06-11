@@ -1,6 +1,7 @@
 using CompetitiveProgramming
 using Test
 
+include("test_bridge.jl")
 include("test_combination.jl")
 include("test_dijkstra.jl")
 include("test_disjoint_set.jl")

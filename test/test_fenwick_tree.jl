@@ -1,5 +1,3 @@
-using CompetitiveProgramming.FenwickTreeModule
-
 @testset "Fenwick Tree" begin
     @testset "Basic" begin
         fw = FenwickTree{Int64}(10)
