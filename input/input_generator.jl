@@ -11,4 +11,17 @@ function main()
     end
 end
 
+function make_input()
+    h, w = 80, 80
+    println("$h $w")
+    a = rand(1:80, h, w)
+    b = rand(1:80, h, w)
+    for i in 1:h
+        println(join(a[i, :]), " ")
+    end
+    for i in 1:h
+        println(join(b[i, :]), " ")
+    end
+end
+
 main()
