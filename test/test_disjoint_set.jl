@@ -3,9 +3,11 @@
         d = DisjointSet(2)
         @test in_same_set(d, 1, 1)
         @test !in_same_set(d, 1, 2)
+        @test groups(d) == Set([Set([1]), Set([2])])
         @test union!(d, 1, 2) == 1
         @test find_root!(d, 2) == 1
         @test group_size(d, 2) == 2
+        @test groups(d) == Set([Set([1, 2])])
     end
 
     @testset "Line" begin

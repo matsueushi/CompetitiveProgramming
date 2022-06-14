@@ -10,7 +10,7 @@ include("dijkstra.jl")
 export DijkstraEdge, DijkStraGraph, DijkstraResult, dijkstra
 
 include("disjoint_set.jl")
-export DisjointSet, find_root!, in_same_set, group_size
+export DisjointSet, find_root!, in_same_set, group_size, groups
 
 include("fenwick_tree.jl")
 export FenwickTree, add!, prefixsum, partialsum

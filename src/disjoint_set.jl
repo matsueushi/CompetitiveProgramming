@@ -46,3 +46,15 @@ end
 in_same_set(d::DisjointSet, a::Int, b::Int) = find_root!(d, a) == find_root!(d, b)
 
 group_size(d::DisjointSet, a::Int) = -d.par_or_size[find_root!(d, a)]
+
+function groups(d::DisjointSet)
+    gs = [Set{Int}() for _ in 1:d.n]
+    for i in 1:d.n
+        if d.par_or_size[i] < 0
+            push!(gs[i], i)
+        else
+            push!(gs[d.par_or_size[i]], i)
+        end
+    end
+    Set(s for s in gs if length(s) > 0)
+end
