@@ -1,26 +1,17 @@
-"""
-    DisjointSet(n::Int)
-Construct an undirected graph with n vertices and no edges.
-
-    union!(d::DisjointSet, a::Int, b::Int)
-Add an edge (a, b) and return the root.
-
-    find_root!(d::DisjointSet, a::Int)
-Find the root element of the connected component containing `a`.
-
-    in_same_set(d::DisjointSet, a::Int, b::Int)
-Return whether `a` and `b` are in the same set.
-
-    group_size(d::DisjointSet, a::Int)
-Return the number of elements of the set containing `a`.
-"""
+parseints() = parse.(Int, split(readline()))
+function parsepoints(n::Int)
+    xs, ys = zeros(Int, n), zeros(Int, n)
+    for i in 1:n
+        xs[i], ys[i] = parseints()
+    end
+    xs, ys
+end
 
 
 struct DisjointSet
     par_or_size::Vector{Int} # root node : -1 * component size
     n::Int
 end
-
 
 DisjointSet(n::Int) = DisjointSet(fill(-1, n), n)
 
@@ -55,3 +46,37 @@ function groups(d::DisjointSet)
     end
     Set(s for s in gs if length(s) > 0)
 end
+
+function solve(n, m, k, as, bs, cs, ds)
+    dset = DisjointSet(n)
+    for (a, b) in zip(as, bs)
+        union!(dset, a, b)
+    end
+    gps = groups(dset)
+    res = zeros(Int, n)
+    for g in gps
+        gn = length(g)
+        for x in g
+            res[x] = gn - 1
+        end
+    end
+    for (a, b) in zip(as, bs)
+        res[a] -= 1
+        res[b] -= 1
+    end
+    for (c, d) in zip(cs, ds)
+        !in_same_set(dset, c, d) && continue
+        res[c] -= 1
+        res[d] -= 1
+    end
+    res
+end
+
+function main()
+    n, m, k = parseints()
+    as, bs = parsepoints(m)
+    cs, ds = parsepoints(k)
+    join(solve(n, m, k, as, bs, cs, ds), " ") |> println
+end
+
+main()
