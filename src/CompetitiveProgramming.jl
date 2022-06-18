@@ -16,7 +16,7 @@ include("fenwick_tree.jl")
 export FenwickTree, add!, prefixsum, partialsum
 
 include("lca.jl")
-export Lca, find_lca, distance
+export LcaGraph, Lca, find_lca, distance
 
 include("number.jl")
 export reversed_number

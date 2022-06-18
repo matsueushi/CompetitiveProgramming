@@ -1,5 +1,21 @@
 import Base.==
 
+struct LcaGraph
+    n::Int
+    edges::Vector{Vector{Int}}
+end
+
+LcaGraph(n::Int) = LcaGraph(n, [Int[] for _ in 1:n])
+
+function add_dir_edge!(g::LcaGraph, s::Int, t::Int)
+    push!(g.edges[s], t)
+end
+
+function add_undir_edge!(g::LcaGraph, s::Int, t::Int)
+    add_dir_edge!(g, s, t)
+    add_dir_edge!(g, t, s)
+end
+
 struct Lca
     ancestor::Matrix{Int}
     depth::Vector{Int}
@@ -8,17 +24,17 @@ end
 
 ==(x::Lca, y::Lca) = x.ancestor == y.ancestor && x.depth == y.depth && x.max_depth == y.max_depth
 
-function dfs!(lca::Lca, graph::Vector{Vector{Int}}, v::Int, par::Int, depth::Int)
+function dfs!(lca::Lca, graph::LcaGraph, v::Int, par::Int, depth::Int)
     lca.ancestor[1, v] = par
     lca.depth[v] = depth
-    for u in graph[v]
+    for u in graph.edges[v]
         u == par && continue
         dfs!(lca, graph, u, v, depth + 1)
     end
 end
 
-function Lca(graph::Vector{Vector{Int}}, root::Int)
-    n = length(graph)
+function Lca(graph::LcaGraph, root::Int)
+    n = graph.n
     max_depth = 1
     while 1 << max_depth < n
         max_depth += 1

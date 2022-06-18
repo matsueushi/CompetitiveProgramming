@@ -1,19 +1,12 @@
 @testset "Lca" begin
-    graph = [Int[] for i in 1:8]
-    push!(graph[1], 2)
-    push!(graph[2], 1)
-    push!(graph[1], 3)
-    push!(graph[3], 1)
-    push!(graph[2], 4)
-    push!(graph[4], 2)
-    push!(graph[2], 5)
-    push!(graph[5], 2)
-    push!(graph[3], 6)
-    push!(graph[6], 3)
-    push!(graph[5], 7)
-    push!(graph[7], 5)
-    push!(graph[5], 8)
-    push!(graph[8], 5)
+    graph = LcaGraph(8)
+    add_undir_edge!(graph, 1, 2)
+    add_undir_edge!(graph, 1, 3)
+    add_undir_edge!(graph, 2, 4)
+    add_undir_edge!(graph, 2, 5)
+    add_undir_edge!(graph, 3, 6)
+    add_undir_edge!(graph, 5, 7)
+    add_undir_edge!(graph, 5, 8)
     lca = Lca(graph, 1)
     @test lca == Lca(
         [
