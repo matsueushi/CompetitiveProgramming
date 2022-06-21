@@ -17,10 +17,10 @@ end
 function solve(h, w, ss)
     dist = fill(typemax(Int), h, w)
     dist[1, 1] = 0
-    pq = PriorityQueue{Pair{Point,Int},Int}()
-    enqueue!(pq, Point(1, 1) => 0, 0)
-    while !isempty(pq)
-        p, _ = dequeue!(pq)
+    dq = Deque{Pair{Point,Int}}()
+    push!(dq, Point(1, 1) => 0)
+    while !isempty(dq)
+        p, d = popfirst!(dq)
         for dx in -2:2
             for dy in -2:2
                 (dx == dy == 0 || abs(dx) == abs(dy) == 2) && continue
@@ -31,12 +31,12 @@ function solve(h, w, ss)
                 if abs(dx) + abs(dy) == 1 && ss[x][y] == '.'
                     if d < dist[x, y]
                         dist[x, y] = d
-                        enqueue!(pq, Point(x, y) => d, d)
+                        pushfirst!(dq, Point(x, y) => d)
                     end
                 else
                     if d + 1 < dist[x, y]
                         dist[x, y] = d + 1
-                        enqueue!(pq, Point(x, y) => d + 1, d + 1)
+                        push!(dq, Point(x, y) => d + 1)
                     end
                 end
             end
