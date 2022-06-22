@@ -24,4 +24,23 @@ function make_input()
     end
 end
 
+function make_input2()
+    n = 100
+    m = 100
+    as = rand(1:n, m)
+    bs = rand(1:n, m)
+    res = NTuple{2,Int}[]
+    for (a, b) in zip(as, bs)
+        a == b && continue
+        a, b = minmax(a, b)
+        push!(res, (a, b))
+    end
+    unique!(res)
+    mm = length(res)
+    println("$n $mm")
+    for (a, b) in res
+        println("$a $b")
+    end
+end
+
 main()
