@@ -27,6 +27,9 @@ export next_permutation!
 include("prime.jl")
 export sieve, divisors
 
+include("scc.jl")
+export SccGraph, scc
+
 
 export add_dir_edge!, add_undir_edge!
 
