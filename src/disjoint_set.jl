@@ -29,7 +29,7 @@ function Base.union!(d::DisjointSet, a::Int, b::Int)
     x = find_root!(d, a)
     y = find_root!(d, b)
     x == y && return x
-    if -d.par_or_size[x] < -d.par_or_size[x]
+    if -d.par_or_size[x] < -d.par_or_size[y]
         x, y = y, x
     end
     d.par_or_size[x] += d.par_or_size[y]
